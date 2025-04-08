@@ -29,7 +29,7 @@ namespace Projektarbete_Bokningssystem.Pages.Bookings
 
         public SelectList RoomList { get; set; } //Bindas till en dropdown meny
 
-        public void LoadBookingData()
+        public void LoadBookingData() // I am a
         {
             // Hämta rum för dropdown-listan
             RoomList = new SelectList(_context.StudyRooms, "Id", "Name");
