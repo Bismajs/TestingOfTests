@@ -76,6 +76,53 @@ public class LoginUserSteps
         Console.WriteLine(error); //visar vad som faktiskt tstår
         Assert.False(string.IsNullOrEmpty(error));
     }
+
+    [When("I navigate to the booking page")]
+    public async Task WhenINavigateToTheBookingPage()
+    {
+        await _page.ClickAsync("a.btn.btn-primary[href='/Bookings/Create']");
+        await _page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        Assert.Contains("/Bookings/Create", _page.Url);
+    }
+
+    [When("I select a study room")]
+    public async Task WhenISelectAStudyRoom()
+    {
+        // Ändra denna selector om det inte stämmer exakt med ditt select-element
+        await _page.SelectOptionAsync("select#Booking_StudyRoomId", new SelectOptionValue { Index = 1 });
+    }
+
+    [When("I select a date")]
+    public async Task WhenISelectADate()
+    {
+        // Du kan anpassa detta efter din datepicker. Här fyller vi ett vanligt datumfält:
+        var today = DateTime.Today.ToString("yyyy-MM-dd");
+        await _page.FillAsync("input#Booking_BookingDate", today);
+    }
+
+    [When("I submit the booking")]
+    public async Task WhenISubmitTheBooking()
+    {
+        await _page.ClickAsync("input[type='submit'][value='Boka']");
+        await _page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+    }
+
+    [Then("I should be redirected to the MyBookings page")]
+    public void ThenIShouldBeRedirectedToTheMyBookingsPage()
+    {
+        Assert.Contains("/Bookings/MyBookings", _page.Url);
+    }
+
+    [Then("I should see my new booking listed")]
+    public async Task ThenIShouldSeeMyNewBookingListed()
+    {
+        var content = await _page.ContentAsync();
+        Assert.True(
+            content.Contains("Jupiter") || content.Contains("Telescope") || content.Contains("Science"),
+            "Expected to find one of the room names in the booking list."
+        );
+    }
+
 }
 
 
