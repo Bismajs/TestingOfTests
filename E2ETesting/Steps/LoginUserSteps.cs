@@ -7,6 +7,9 @@ namespace E2ETesting.Steps;
 [Binding]
 public class LoginUserSteps
 {
+    private const string LoginUrl = "https://localhost:7086/Identity/Account/Login";
+    private const string HomeUrl = "https://localhost:7086/Home";
+
     private IPlaywright _playwright;
     private IBrowser _browser;
     private IBrowserContext _context;
@@ -31,7 +34,8 @@ public class LoginUserSteps
     [Given("I am on the login page")]
     public async Task GivenIAmOnTheLoginPage()
     {
-        await _page.GotoAsync("https://localhost:7086/Identity/Account/Login");
+        await _page.GotoAsync(LoginUrl);
+        Assert.Contains("Login", _page.Url); //
 
     }
 
@@ -46,7 +50,7 @@ public class LoginUserSteps
     {
         await _page.FillAsync("input[name='Input.Password']", password);
     }
-    
+
     [When(@"I click the login button")]
     public async Task WhenIClickTheLoginButton()
     {
@@ -56,8 +60,21 @@ public class LoginUserSteps
     public async Task ThenIShouldBeRedirectedToTheHomePage()
     {
         await _page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        var url = _page.Url;
-        Assert.Contains("/Home", url);
+        Assert.Equal(HomeUrl, _page.Url);
+    }
+
+    [Then(@"I should stay on the login page")]
+    public void ThenIShouldStayOnTheLoginPage()
+    {
+        Assert.Contains("Login", _page.Url); // fortfarande på login-sidan
+    }
+
+    [Then(@"I should see an error message")]
+    public async Task ThenIShouldSeeAnErrorMessage()
+    {
+        var error = await _page.InnerTextAsync(".validation-summary-errors");
+        Console.WriteLine(error); //visar vad som faktiskt tstår
+        Assert.False(string.IsNullOrEmpty(error));
     }
 }
 
