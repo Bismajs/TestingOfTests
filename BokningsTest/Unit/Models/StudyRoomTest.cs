@@ -17,13 +17,13 @@ namespace BokningsTest.Unit.Models
             var room = new StudyRoom
             {
                 Id = 1,
-                Name = "Room A",
+                Name = "Jupiter",
                 Bookings = new List<Booking>()
             };
 
             // Verifiera att egenskaperna har tilldelats korrekt. ASSERT
             Assert.Equal(1, room.Id);
-            Assert.Equal("Room A", room.Name);
+            Assert.Equal("Jupiter", room.Name);
             Assert.NotNull(room.Bookings);
         }
 

@@ -31,7 +31,7 @@ namespace BokningsTest.Unit.Models
         {
             // Skapa testdata för en användare och ett studierum som krävs för bokningen. ARRANGE
             var user = new Microsoft.AspNetCore.Identity.IdentityUser { UserName = "testuser" };
-            var studyRoom = new StudyRoom { Id = 1, Name = "Room A" };
+            var studyRoom = new StudyRoom { Id = 1, Name = "Jupiter" };
 
             //Skapa ett nytt objekt av Booking och tilldela egenskaper.
             var booking = new Booking
